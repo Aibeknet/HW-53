@@ -24,7 +24,7 @@ const AddTaskForm: React.FC<AddTaskFormProps> = ({ onAdd }) => {
                 type="text"
                 value={currentTask}
                 onChange={handleInputChange}
-                placeholder="Enter the task"
+                placeholder="Add new task"
             />
             <button onClick={handleAddClick}>Add</button>
         </div>

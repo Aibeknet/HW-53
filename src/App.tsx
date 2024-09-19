@@ -1,35 +1,56 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useState } from 'react';
+import AddTaskForm from './components/AddTaskForm';
+import Task from './components/Task';
+import './App.css';
 
-function App() {
-  const [count, setCount] = useState(0)
-
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+interface ITask {
+    id: string;
+    text: string;
+    completed: boolean;
 }
 
-export default App
+const App: React.FC = () => {
+    const [tasks, setTasks] = useState<ITask[]>([
+        {id: '1', text: 'Buy milk', completed: false},
+        {id: '2', text: 'Walk with dog', completed: false},
+        {id: '3', text: 'Do homework', completed: false},
+    ]);
+
+    const addTask = (text: string) => {
+        const newTask: ITask = {
+            id: Date.now().toString(), text,
+            completed: false,
+        };
+        setTasks([...tasks, newTask]);
+    };
+
+    const deleteTask = (id: string) => {
+        setTasks(tasks.filter((task) => task.id !== id));
+    };
+
+    const toggleTask = (id: string) => {
+        const updatedTasks = tasks.map(task =>
+            task.id === id ? { ...task, completed: !task.completed } : task
+        );
+
+        setTasks(updatedTasks);
+    };
+
+    return (
+        <div className="container">
+            <AddTaskForm onAdd={addTask}/>
+            <div>
+                {tasks.map(task => (
+                    <Task
+                        key={task.id}
+                        task={task}
+                        onDelete={deleteTask}
+                        onToggle={toggleTask}
+                    />
+                ))}
+            </div>
+        </div>
+    );
+};
+
+export default App;

@@ -12,7 +12,7 @@ interface TaskProps {
 
 const Task: React.FC<TaskProps> = ({ task, onDelete, onToggle }) => {
     return (
-        <div>
+        <div className="task">
             <input
                 type="checkbox"
                 checked={task.completed}
